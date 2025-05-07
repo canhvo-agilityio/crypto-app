@@ -1,0 +1,5 @@
+export { default as HomeIcon } from './Home';
+export { default as GiftIcon } from './Gift';
+export { default as ChartIcon } from './Chart';
+export { default as GlobeIcon } from './Globe';
+export { default as UserIcon } from './User';
