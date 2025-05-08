@@ -14,7 +14,7 @@ const Navbar = () => {
     <nav className="flex justify-between items-center px-20 py-4 shadow bg-white">
       <div className="flex items-center gap-6">
       <img
-        src="/pwa-192x192.png"
+        src="/icon-192x192.png"
         alt="Logo"
         className="w-10 h-10 object-contain"
       />

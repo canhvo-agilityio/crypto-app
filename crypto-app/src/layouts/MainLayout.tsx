@@ -4,7 +4,7 @@ import BottomTab from "./BottomTab";
 
 const MainLayout = () => {
   return (
-    <>
+    <div className="pb-12">
       <div className="hidden md:block">
         <Navbar />
       </div>
@@ -12,7 +12,7 @@ const MainLayout = () => {
         <BottomTab />
       </div>
       <Outlet />
-    </>
+    </div>
   );
 };
 

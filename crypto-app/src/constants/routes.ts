@@ -6,5 +6,5 @@ export const ROUTERS = {
   REWARDS: '/rewards',
   PROFILE: '/profile',
   COIN: '/coin/:id',
-  COIN_PARAM: '/post/',
+  COIN_PARAM: '/coin/',
 };
