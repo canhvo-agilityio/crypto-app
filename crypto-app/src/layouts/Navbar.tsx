@@ -5,13 +5,13 @@ const links = [
   { to: ROUTERS.HOME, label: 'Home', end: true },
   { to: ROUTERS.MARKET, label: 'Market' },
   { to: ROUTERS.REWARDS, label: 'Rewards' },
-  { to: ROUTERS.PORTFOLIO, label: 'portfolio' },
+  { to: ROUTERS.PORTFOLIO, label: 'Portfolio' },
   { to: ROUTERS.PROFILE, label: 'Profile' },
 ];
 
 const Navbar = () => {
   return (
-    <nav className="flex justify-between items-center px-6 py-4 shadow bg-white">
+    <nav className="flex justify-between items-center px-20 py-4 shadow bg-white">
       <div className="flex items-center gap-6">
       <img
         src="/pwa-192x192.png"

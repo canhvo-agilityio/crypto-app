@@ -1,1 +1,36 @@
 @import "tailwindcss";
+
+@font-face {
+  font-family: CircularStd;
+  src: url('./assets/fonts/Circularstd-Regular.ttf');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: CircularStd;
+  src: url('./assets/fonts/CircularStd-Medium.ttf');
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: CircularStd;
+  src: url('./assets/fonts/CircularStd-Bold.ttf');
+  font-weight: 700;
+  font-style: normal;
+}
+
+@theme {
+  --color-primary: #0063F5;
+  --color-text-primary: #212529;
+  --color-text-secondary: #343A40;
+  --color-text-tertiary: #6C757D;
+}
+
+@layer base {
+  html,
+  body {
+    font-family: 'CircularStd', sans-serif;
+  }
+}
