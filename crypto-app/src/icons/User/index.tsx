@@ -1,4 +1,4 @@
-import { IconProps } from "@/types";
+import { IconProps } from '@/types'
 
 const User = ({ width = 19, height = 21, color = '#6C757D' }: IconProps) => (
   <svg
@@ -13,6 +13,6 @@ const User = ({ width = 19, height = 21, color = '#6C757D' }: IconProps) => (
       fill={color}
     />
   </svg>
-);
+)
 
-export default User;
+export default User

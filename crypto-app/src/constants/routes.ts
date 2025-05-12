@@ -1,4 +1,3 @@
-
 export const ROUTERS = {
   HOME: '/',
   MARKET: '/market',
@@ -7,4 +6,4 @@ export const ROUTERS = {
   PROFILE: '/profile',
   COIN: '/coin/:id',
   COIN_PARAM: '/coin/',
-};
+}

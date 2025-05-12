@@ -1,4 +1,4 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 @font-face {
   font-family: CircularStd;
@@ -22,10 +22,11 @@
 }
 
 @theme {
-  --color-primary: #0063F5;
+  --color-primary: #0063f5;
   --color-text-primary: #212529;
-  --color-text-secondary: #343A40;
-  --color-text-tertiary: #6C757D;
+  --color-text-secondary: #343a40;
+  --color-text-tertiary: #6c757d;
+  --color-border-primary: #dfe2e4;
 }
 
 @layer base {

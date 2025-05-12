@@ -1,2 +1,2 @@
-export * from './cryptoDB';
-export * from './httpClient';
+export * from './cryptoDB'
+export * from './httpClient'

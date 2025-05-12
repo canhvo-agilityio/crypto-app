@@ -1,11 +1,11 @@
-import { CryptoBase } from "@/types";
-import CryptoCard from "../CryptoCard";
+import { CryptoBase } from '@/types'
+import CryptoCard from '../CryptoCard'
 
 interface CryptoListProps {
-  data: CryptoBase[];
+  data: CryptoBase[]
 }
 
-const CryptoList = ({data}: CryptoListProps) => {
+const CryptoList = ({ data }: CryptoListProps) => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
       {data.map((item) => (
@@ -20,7 +20,7 @@ const CryptoList = ({data}: CryptoListProps) => {
         />
       ))}
     </div>
-  );
+  )
 }
 
-export default CryptoList;
+export default CryptoList

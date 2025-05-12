@@ -1,7 +1,7 @@
-import { ROUTERS } from "@/constants"
-import { createBrowserRouter } from "react-router"
-import { HomePage, MarketPage, CoinPage, ComingSoon } from "@/pages"
-import { MainLayout } from "@/layouts"
+import { ROUTERS } from '@/constants'
+import { createBrowserRouter } from 'react-router'
+import { HomePage, MarketPage, CoinPage, ComingSoon } from '@/pages'
+import { MainLayout } from '@/layouts'
 
 export const router = createBrowserRouter([
   {
@@ -36,5 +36,5 @@ export const router = createBrowserRouter([
   {
     path: ROUTERS.COIN,
     Component: CoinPage,
-  }
+  },
 ])

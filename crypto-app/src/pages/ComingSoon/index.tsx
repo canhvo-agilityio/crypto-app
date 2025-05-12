@@ -3,6 +3,6 @@ const ComingSoon = () => {
     <div>
       <h1>Coming Soon</h1>
     </div>
-  );
+  )
 }
-export default ComingSoon;
+export default ComingSoon

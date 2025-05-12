@@ -1,15 +1,14 @@
-import { VitePWA } from 'vite-plugin-pwa';
+import { VitePWA } from 'vite-plugin-pwa'
 import { defineConfig } from 'vite'
-import * as path from 'path';
-import react from '@vitejs/plugin-react';
-import tailwindcss from '@tailwindcss/vite';
-
+import * as path from 'path'
+import react from '@vitejs/plugin-react'
+import tailwindcss from '@tailwindcss/vite'
 
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
     react(),
-    tailwindcss(), 
+    tailwindcss(),
     VitePWA({
       registerType: 'autoUpdate',
       injectRegister: false,
@@ -58,7 +57,7 @@ export default defineConfig({
             type: 'image/png',
             purpose: 'any',
           },
-        ],    
+        ],
       },
 
       workbox: {
@@ -86,7 +85,7 @@ export default defineConfig({
             urlPattern: /\/(index\.html)?$/,
             handler: 'NetworkFirst', // Always fetch the latest version of the app shell
             options: {
-              cacheName: "app-shell-cache",
+              cacheName: 'app-shell-cache',
               expiration: {
                 maxAgeSeconds: 24 * 60 * 60, // Cache for 1 day
               },
@@ -112,7 +111,8 @@ export default defineConfig({
             },
           },
           {
-            urlPattern: /^https:\/\/api\.coingecko\.com\/api\/v3\/search\/trending/,
+            urlPattern:
+              /^https:\/\/api\.coingecko\.com\/api\/v3\/search\/trending/,
             handler: 'NetworkFirst',
             options: {
               cacheName: 'trending-coins-cache',
@@ -134,12 +134,11 @@ export default defineConfig({
         suppressWarnings: true,
         type: 'module',
       },
-    })
+    }),
   ],
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
     },
   },
-
 })

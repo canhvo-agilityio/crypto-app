@@ -1,2 +1,2 @@
-export * from './components';
-export * from './crypto';
+export * from './components'
+export * from './crypto'

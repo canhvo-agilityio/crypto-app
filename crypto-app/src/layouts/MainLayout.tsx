@@ -1,6 +1,6 @@
-import { Outlet } from "react-router";
-import Navbar from "./Navbar";
-import BottomTab from "./BottomTab";
+import { Outlet } from 'react-router'
+import Navbar from './Navbar'
+import BottomTab from './BottomTab'
 
 const MainLayout = () => {
   return (
@@ -13,7 +13,7 @@ const MainLayout = () => {
       </div>
       <Outlet />
     </div>
-  );
-};
+  )
+}
 
-export default MainLayout;
+export default MainLayout
