@@ -1,4 +1,5 @@
 import { COINS_STORE } from '@/constants'
+import { cryptoDetailsInitData } from '@/mocks'
 import { addItem, get, getItem, getItems } from '@/services'
 import { Coin, CoinData, CryptoBase, CryptoDetails, CryptoItem } from '@/types'
 import { useEffect, useState } from 'react'
@@ -199,7 +200,7 @@ export const useCoins = (filter?: string, search?: string) => {
 }
 
 export const useCoinDetails = (coinId: string) => {
-  const [coin, setCoin] = useState<CryptoDetails | null>(null)
+  const [coin, setCoin] = useState<CryptoDetails>(cryptoDetailsInitData)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 

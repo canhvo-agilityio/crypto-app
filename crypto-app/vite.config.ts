@@ -111,8 +111,7 @@ export default defineConfig({
             },
           },
           {
-            urlPattern:
-              /^https:\/\/api\.coingecko\.com\/api\/v3\/search\/trending/,
+            urlPattern: /^https:\/\/api\.coingecko\.com\/api\/v3\/.*/,
             handler: 'NetworkFirst',
             options: {
               cacheName: 'trending-coins-cache',
