@@ -1,6 +1,4 @@
-import { CRYPTO_APP_DB, DB_VERSION, COINS_STORE } from '@/constants'
-
-// Interface for stored items
+import { CRYPTO_APP_DB, DB_VERSION, COINS_STORE } from '@/constants' // Interface for stored items
 export interface StoredItem<T> {
   id: number
   name: string
@@ -125,6 +123,30 @@ const getItems = async <T>(storeName: string): Promise<StoredItem<T>[]> => {
   })
 }
 
+const getItem = async <T>(
+  storeName: string,
+  id: string,
+): Promise<StoredItem<T> | undefined> => {
+  if (!(await storeExists(storeName))) {
+    throw new Error(`Store ${storeName} does not exist`)
+  }
+
+  const database = await openDB()
+
+  return new Promise((resolve, reject) => {
+    const transaction = database.transaction([storeName], 'readonly')
+    const store = transaction.objectStore(storeName)
+    const request = store.get(id)
+
+    request.onsuccess = () => resolve(request.result)
+    request.onerror = () => {
+      reject(
+        new Error(`Failed to get item from ${storeName}: ${request.error}`),
+      )
+    }
+  })
+}
+
 // Delete an item from the specified store
 const deleteItem = async (storeName: string, itemId: number): Promise<void> => {
   if (!(await storeExists(storeName))) {
@@ -175,4 +197,12 @@ const closeDB = async (): Promise<void> => {
   }
 }
 
-export { addItem, getItems, deleteItem, clearStore, storeExists, closeDB }
+export {
+  addItem,
+  getItems,
+  deleteItem,
+  clearStore,
+  storeExists,
+  closeDB,
+  getItem,
+}

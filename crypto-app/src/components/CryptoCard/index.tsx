@@ -18,7 +18,7 @@ const CryptoCard = ({
 
   return (
     <div
-      className="flex items-center justify-between p-4 rounded-xl shadow bg-white"
+      className="flex items-center justify-between p-4 rounded-xl shadow bg-white hover:opacity-50 cursor-pointer"
       onClick={handleClick}
     >
       <div className="flex items-center gap-4">

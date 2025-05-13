@@ -1,5 +1,5 @@
 import { CryptoList, LoadingIndicator } from '@/components'
-import { useCryptos, useDebounce } from '@/hooks'
+import { useCoins, useDebounce } from '@/hooks'
 import { Search } from '@/icons'
 import { motion } from 'motion/react'
 import { useState } from 'react'
@@ -29,7 +29,7 @@ const Market = () => {
     setSearch('')
   }
 
-  const { coins, isLoading, error } = useCryptos(activeTab, debouncedSearch)
+  const { coins, isLoading, error } = useCoins(activeTab, debouncedSearch)
 
   return (
     <div className="px-6 md:px-20 py-8 flex flex-col gap-8">
