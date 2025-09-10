@@ -11,7 +11,7 @@ import {
   Legend,
   ChartOptions,
 } from 'chart.js'
-import { useCoinDetails } from '@/hooks'
+import { useCoinDetails, useOnlineStatus } from '@/hooks'
 import { LoadingIndicator } from '@/components'
 
 ChartJS.register(
@@ -26,6 +26,7 @@ ChartJS.register(
 const Coin = () => {
   const navigate = useNavigate()
   const params = useParams()
+  const isOnline = useOnlineStatus()
   const { id } = params || {}
   const { coin, loading, error } = useCoinDetails(id || '')
   const {
@@ -86,6 +87,7 @@ const Coin = () => {
   return (
     <div className="px-6 py-8 md:px-30 flex flex-col gap-6">
       {loading && <LoadingIndicator />}
+      {!isOnline && <p>You are offline</p>}
       {error && <p className="text-red-500 text-center">{error}</p>}
       <div className="flex items-center gap-2 md:gap-4">
         <button

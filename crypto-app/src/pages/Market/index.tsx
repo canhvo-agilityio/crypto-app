@@ -1,5 +1,5 @@
 import { CryptoList, LoadingIndicator } from '@/components'
-import { useCoins, useDebounce } from '@/hooks'
+import { useCoins, useDebounce, useOnlineStatus } from '@/hooks'
 import { Search } from '@/icons'
 import { motion } from 'motion/react'
 import { useState } from 'react'
@@ -15,6 +15,7 @@ const Market = () => {
   const [open, setOpen] = useState<boolean>(false)
   const [activeTab, setActiveTab] = useState<string>(tabs[0].id)
   const debouncedSearch = useDebounce(search, 1000)
+  const isOnline = useOnlineStatus()
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value)
@@ -107,6 +108,7 @@ const Market = () => {
           })}
         </div>
         {error && <p>{error}</p>}
+        {!isOnline && <p>You are offline</p>}
         {isLoading && <LoadingIndicator />}
         {search && !isLoading && coins.length === 0 && (
           <p className="text-center text-gray-500">

@@ -45,18 +45,6 @@ export default defineConfig({
             sizes: '512x512',
             type: 'image/png',
           },
-          {
-            src: '/maskable-icon-512x512.png',
-            sizes: '512x512',
-            type: 'image/png',
-            purpose: 'maskable',
-          },
-          {
-            src: '/apple-touch-icon-180x180.png',
-            sizes: '180x180',
-            type: 'image/png',
-            purpose: 'any',
-          },
         ],
       },
 
@@ -121,6 +109,12 @@ export default defineConfig({
               },
               cacheableResponse: {
                 statuses: [0, 200],
+              },
+              backgroundSync: {
+                name: 'coins-sync-queue',
+                options: {
+                  maxRetentionTime: 24 * 60, // retry failed requests for 24h
+                },
               },
             },
           },
