@@ -1,5 +1,5 @@
 import { CryptoList, LoadingIndicator } from '@/components'
-import { useCoins, useDebounce, useOnlineStatus } from '@/hooks'
+import { useCoins, useDebounce, useNetworkStatus } from '@/hooks'
 import { Search } from '@/icons'
 import { motion } from 'motion/react'
 import { useState } from 'react'
@@ -15,7 +15,7 @@ const Market = () => {
   const [open, setOpen] = useState<boolean>(false)
   const [activeTab, setActiveTab] = useState<string>(tabs[0].id)
   const debouncedSearch = useDebounce(search, 1000)
-  const isOnline = useOnlineStatus()
+  const isOnline = useNetworkStatus()
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value)

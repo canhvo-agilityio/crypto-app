@@ -11,7 +11,7 @@ import {
   Legend,
   ChartOptions,
 } from 'chart.js'
-import { useCoinDetails, useOnlineStatus } from '@/hooks'
+import { useCoinDetails, useNetworkStatus } from '@/hooks'
 import { LoadingIndicator } from '@/components'
 
 ChartJS.register(
@@ -26,7 +26,7 @@ ChartJS.register(
 const Coin = () => {
   const navigate = useNavigate()
   const params = useParams()
-  const isOnline = useOnlineStatus()
+  const isOnline = useNetworkStatus()
   const { id } = params || {}
   const { coin, loading, error } = useCoinDetails(id || '')
   const {

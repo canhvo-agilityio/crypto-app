@@ -1,8 +1,8 @@
 import { Banner, CryptoList, LoadingIndicator } from '@/components'
-import { useOnlineStatus, useTrendingCoins } from '@/hooks'
+import { useNetworkStatus, useTrendingCoins } from '@/hooks'
 
 const Home = () => {
-  const isOnline = useOnlineStatus()
+  const isOnline = useNetworkStatus()
   const { coins, loading, error } = useTrendingCoins()
 
   return (
