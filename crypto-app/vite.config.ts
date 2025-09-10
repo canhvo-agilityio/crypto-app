@@ -114,6 +114,7 @@ export default defineConfig({
                 name: 'coins-sync-queue',
                 options: {
                   maxRetentionTime: 24 * 60, // retry failed requests for 24h
+                  forceSyncFallback: true,
                 },
               },
             },

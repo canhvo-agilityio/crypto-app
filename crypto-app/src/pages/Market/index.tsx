@@ -15,7 +15,7 @@ const Market = () => {
   const [open, setOpen] = useState<boolean>(false)
   const [activeTab, setActiveTab] = useState<string>(tabs[0].id)
   const debouncedSearch = useDebounce(search, 1000)
-  const isOnline = useNetworkStatus()
+  const isOffline = useNetworkStatus()
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value)
@@ -87,6 +87,7 @@ const Market = () => {
       )}
       <div className="flex flex-col gap-8">
         <p className="text-black text-lg font-semibold">Coins</p>
+
         <div className="flex space-x-6 px-4 border-b-1 border-border-primary">
           {tabs.map((tab) => {
             const handleClick = () => {
@@ -107,9 +108,13 @@ const Market = () => {
             )
           })}
         </div>
-        {error && <p>{error}</p>}
-        {!isOnline && <p>You are offline</p>}
+
         {isLoading && <LoadingIndicator />}
+        {isOffline ? (
+          <p className="text-red-500 text-center">You are offline</p>
+        ) : (
+          error && <p className="text-red-500 text-center">{error}</p>
+        )}
         {search && !isLoading && coins.length === 0 && (
           <p className="text-center text-gray-500">
             No results found for "{search}"

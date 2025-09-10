@@ -26,7 +26,7 @@ ChartJS.register(
 const Coin = () => {
   const navigate = useNavigate()
   const params = useParams()
-  const isOnline = useNetworkStatus()
+  const isOffline = useNetworkStatus()
   const { id } = params || {}
   const { coin, loading, error } = useCoinDetails(id || '')
   const {
@@ -87,8 +87,7 @@ const Coin = () => {
   return (
     <div className="px-6 py-8 md:px-30 flex flex-col gap-6">
       {loading && <LoadingIndicator />}
-      {!isOnline && <p>You are offline</p>}
-      {error && <p className="text-red-500 text-center">{error}</p>}
+
       <div className="flex items-center gap-2 md:gap-4">
         <button
           className="hover:opacity-50 cursor-pointer"
@@ -106,6 +105,11 @@ const Coin = () => {
           <span className="text-xs font-medium text-red-500">({symbol})</span>
         </div>
       </div>
+      {isOffline ? (
+        <p className="text-red-500 text-center">You are offline</p>
+      ) : (
+        error && <p className="text-red-500 text-center">{error}</p>
+      )}
       <div>
         <span className="text-xl font-bold text-text-primary mr-2">
           {price}
