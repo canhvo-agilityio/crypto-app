@@ -52,6 +52,7 @@ export default defineConfig({
         globPatterns: ['**/*.{js,css,html,svg,png,ico}'],
         cleanupOutdatedCaches: true,
         clientsClaim: true,
+        importScripts: ['firebase-messaging-sw.ts'],
         runtimeCaching: [
           {
             // Cache static assets with a Cache First strategy

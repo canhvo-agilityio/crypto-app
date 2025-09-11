@@ -1,6 +1,7 @@
 import { Outlet } from 'react-router'
 import Navbar from './Navbar'
 import BottomTab from './BottomTab'
+import { Notification } from '@/components'
 
 const MainLayout = () => {
   return (
@@ -12,6 +13,7 @@ const MainLayout = () => {
         <BottomTab />
       </div>
       <Outlet />
+      <Notification />
     </div>
   )
 }
