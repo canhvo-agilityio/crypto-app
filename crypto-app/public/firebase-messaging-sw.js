@@ -19,12 +19,33 @@ firebase.initializeApp(firebaseConfig)
 const messaging = firebase.messaging()
 
 messaging.onBackgroundMessage(function (payload) {
-  console.log('Received background message ', payload)
   // Customize notification here
   const notificationTitle = payload.notification.title
   const notificationOptions = {
     body: payload.notification.body,
+    icon: '/icon-64x64.png',
   }
 
   self.registration.showNotification(notificationTitle, notificationOptions)
+})
+
+self.addEventListener('notificationclick', (event) => {
+  event.notification.close()
+  const targetUrl = event.notification.data?.url || '/'
+
+  event.waitUntil(
+    clients
+      .matchAll({
+        type: 'window',
+        includeUncontrolled: true,
+      })
+      .then((clientList) => {
+        for (const client of clientList) {
+          if (client.url.includes(targetUrl) && 'focus' in client) {
+            return client.focus()
+          }
+        }
+        return clients.openWindow(targetUrl)
+      }),
+  )
 })

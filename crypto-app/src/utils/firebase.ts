@@ -1,5 +1,10 @@
 import { initializeApp } from 'firebase/app'
-import { getMessaging, getToken, onMessage } from 'firebase/messaging'
+import {
+  getMessaging,
+  getToken,
+  MessagePayload,
+  onMessage,
+} from 'firebase/messaging'
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_APP_API_KEY,
@@ -35,10 +40,9 @@ export const requestForToken = async () => {
     console.error('An error occurred while retrieving token.', err)
   }
 }
-export const onMessageListener = () =>
+export const onMessageListener = (): Promise<MessagePayload> =>
   new Promise((resolve) => {
     onMessage(messaging, (payload) => {
-      console.log('payload', payload)
       resolve(payload)
     })
   })
