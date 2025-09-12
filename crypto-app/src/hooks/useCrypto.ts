@@ -2,7 +2,7 @@ import { COINS_STORE } from '@/constants'
 import { cryptoDetailsInitData } from '@/mocks'
 import { addItem, get, getItem, getItems } from '@/services'
 import { Coin, CoinData, CryptoBase, CryptoDetails, CryptoItem } from '@/types'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 export const useTrendingCoins = () => {
   const [coins, setCoins] = useState<CryptoBase[]>([])
@@ -183,7 +183,7 @@ export const useCoinDetails = (coinId: string) => {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
-  const getCoinFromIndexedDB = async () => {
+  const getCoinFromIndexedDB = useCallback(async () => {
     try {
       const storedItem = await getItem<CryptoDetails>(COINS_STORE, coinId)
       if (storedItem) {
@@ -194,7 +194,7 @@ export const useCoinDetails = (coinId: string) => {
     } catch (err) {
       setError(err instanceof Error ? err.message : String(err))
     }
-  }
+  }, [coinId])
 
   useEffect(() => {
     const fetchCoinDetails = async () => {

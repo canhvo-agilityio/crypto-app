@@ -1,6 +1,6 @@
 import { CRYPTO_APP_DB, DB_VERSION, COINS_STORE } from '@/constants' // Interface for stored items
 export interface StoredItem<T> {
-  id: number
+  id: number | string
   name: string
   data: T
   timestamp: number
@@ -31,26 +31,15 @@ const openDB = async (): Promise<IDBDatabase> => {
   return new Promise((resolve, reject) => {
     const request = indexedDB.open(CRYPTO_APP_DB, DB_VERSION)
 
-    request.onerror = () => {
-      reject(new Error(`Failed to open database: ${request.error}`))
-    }
-
-    request.onsuccess = () => {
-      db = request.result
-      resolve(db)
-    }
+    request.onerror = () => reject(request.error)
 
     request.onupgradeneeded = (event) => {
       const database = (event.target as IDBOpenDBRequest).result
-
-      // Create all stores based on configurations
       storeConfigs.forEach((config) => {
         if (!database.objectStoreNames.contains(config.name)) {
           const objectStore = database.createObjectStore(config.name, {
             keyPath: config.keyPath,
           })
-
-          // Create indexes for the store
           config.indexes?.forEach((index) => {
             objectStore.createIndex(index.name, index.keyPath, {
               unique: index.unique ?? false,
@@ -58,6 +47,20 @@ const openDB = async (): Promise<IDBDatabase> => {
           })
         }
       })
+    }
+
+    request.onsuccess = () => {
+      db = request.result
+      if (request.transaction) {
+        request.transaction.oncomplete = () => resolve(db!)
+        request.transaction.onerror = () => reject(request.transaction?.error)
+      } else {
+        resolve(db!)
+      }
+    }
+
+    request.onblocked = () => {
+      reject(new Error('Database open blocked'))
     }
   })
 }
@@ -75,29 +78,13 @@ const addItem = async <T>(
   id: string,
   name: string,
 ): Promise<void> => {
-  if (!(await storeExists(storeName))) {
-    throw new Error(`Store ${storeName} does not exist`)
-  }
-
-  const database = await openDB()
-
+  const db = await openDB()
   return new Promise((resolve, reject) => {
-    const transaction = database.transaction([storeName], 'readwrite')
-    const store = transaction.objectStore(storeName)
-
-    const record = {
-      id,
-      name,
-      data: item,
-      timestamp: Date.now(),
-    }
-
-    const request = store.put(record)
-
-    request.onsuccess = () => resolve()
-    request.onerror = () => {
-      reject(new Error(`Failed to add item to ${storeName}: ${request.error}`))
-    }
+    const tx = db.transaction(storeName, 'readwrite')
+    const store = tx.objectStore(storeName)
+    store.put({ id, name, data: item, timestamp: Date.now() })
+    tx.oncomplete = () => resolve()
+    tx.onerror = () => reject(tx.error ?? new Error('Transaction failed'))
   })
 }
 
@@ -127,23 +114,14 @@ const getItem = async <T>(
   storeName: string,
   id: string,
 ): Promise<StoredItem<T> | undefined> => {
-  if (!(await storeExists(storeName))) {
-    throw new Error(`Store ${storeName} does not exist`)
-  }
-
-  const database = await openDB()
+  const db = await openDB()
 
   return new Promise((resolve, reject) => {
-    const transaction = database.transaction([storeName], 'readonly')
-    const store = transaction.objectStore(storeName)
+    const tx = db.transaction(storeName, 'readonly')
+    const store = tx.objectStore(storeName)
     const request = store.get(id)
-
-    request.onsuccess = () => resolve(request.result)
-    request.onerror = () => {
-      reject(
-        new Error(`Failed to get item from ${storeName}: ${request.error}`),
-      )
-    }
+    tx.oncomplete = () => resolve(request.result as StoredItem<T> | undefined)
+    tx.onerror = () => reject(tx.error ?? new Error('Transaction failed'))
   })
 }
 
