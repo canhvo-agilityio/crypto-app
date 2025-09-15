@@ -33,6 +33,12 @@ export const MANIFEST_CONFIG: Options['manifest'] = {
       type: 'image/png',
       purpose: 'any',
     },
+    {
+      src: '/maskable-icon.png',
+      sizes: '512x512',
+      type: 'image/png',
+      purpose: 'maskable',
+    },
   ],
 }
 
