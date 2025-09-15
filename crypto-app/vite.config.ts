@@ -6,6 +6,24 @@ import tailwindcss from '@tailwindcss/vite'
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  build: {
+    rollupOptions: {
+      input: {
+        main: path.resolve(__dirname, 'index.html'),
+        'firebase-messaging-sw': path.resolve(
+          __dirname,
+          'src/sw/firebase-messaging-sw.js',
+        ),
+      },
+      output: {
+        entryFileNames: (chunkInfo) => {
+          return chunkInfo.name === 'firebase-messaging-sw'
+            ? '[name].js'
+            : 'assets/[name]-[hash].js'
+        },
+      },
+    },
+  },
   plugins: [
     react(),
     tailwindcss(),
