@@ -1,4 +1,4 @@
-import { COINS_STORE } from '@/constants'
+import { API_URL, COINS_STORE, ENDPOINTS } from '@/constants'
 import { cryptoDetailsInitData } from '@/mocks'
 import { addItem, get, getItem, getItems } from '@/services'
 import { Coin, CoinData, CryptoBase, CryptoDetails, CryptoItem } from '@/types'
@@ -25,7 +25,7 @@ export const useTrendingCoins = () => {
       try {
         setLoading(true)
         const response = await get<CoinData>(
-          'https://api.coingecko.com/api/v3/search/trending',
+          API_URL.BASE_URL + ENDPOINTS.TRENDING_COINS,
         )
         const transformed: CryptoBase[] = response.coins.map((coin: Coin) => ({
           id: coin.item.id,
@@ -111,7 +111,7 @@ export const useCoins = (filter?: string, search?: string) => {
     setError(null)
     try {
       const response = await get<CryptoItem[]>(
-        `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100`,
+        `${API_URL.BASE_URL}/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100`,
       )
       const transformed: CryptoBase[] = response.map((coin: CryptoItem) => ({
         id: coin.id,
@@ -202,9 +202,7 @@ export const useCoinDetails = (coinId: string) => {
         setLoading(true)
         setError(null)
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const response = await get<any>(
-          `https://api.coingecko.com/api/v3/coins/${coinId}`,
-        )
+        const response = await get<any>(`${API_URL.BASE_URL}/coins/${coinId}`)
         const transformed: CryptoDetails = {
           id: response.id,
           name: response.name,

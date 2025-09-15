@@ -39,7 +39,7 @@ const CryptoCard = ({
           className={`text-xs font-medium ${isPositive ? 'text-green-500' : 'text-red-500'}`}
         >
           {isPositive ? '+' : ''}
-          {changePercent.toFixed(2)}%
+          {changePercent?.toFixed(2)}%
         </div>
       </div>
     </div>

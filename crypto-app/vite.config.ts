@@ -97,6 +97,7 @@ export default defineConfig({
               },
             },
           },
+
           {
             urlPattern:
               /^https:\/\/api\.coingecko\.com\/api\/v3\/search\/trending/,
@@ -110,7 +111,27 @@ export default defineConfig({
               },
 
               backgroundSync: {
-                name: 'crypto-queue',
+                name: 'trending-coins-queue',
+                options: {
+                  maxRetentionTime: 24 * 60,
+                },
+              },
+            },
+          },
+          {
+            urlPattern:
+              /^https:\/\/api\.coingecko\.com\/api\/v3\/coins\/markets(\?.*)?$/,
+            handler: 'NetworkFirst',
+            method: 'GET',
+            options: {
+              cacheName: 'all-coins-cache',
+              expiration: {
+                maxEntries: 10,
+                maxAgeSeconds: 60 * 60 * 24,
+              },
+
+              backgroundSync: {
+                name: 'all-coins-queue',
                 options: {
                   maxRetentionTime: 24 * 60,
                 },

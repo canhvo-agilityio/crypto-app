@@ -4,13 +4,13 @@ importScripts('https://www.gstatic.com/firebasejs/8.2.0/firebase-messaging.js')
 
 // Initialize the Firebase app in the service worker by passing the generated config
 const firebaseConfig = {
-  apiKey: 'AIzaSyCyay6bkQacXzYOvsASGdwFSB4HSAilZ7c',
-  authDomain: 'pwa-test-43b65.firebaseapp.com',
-  projectId: 'pwa-test-43b65',
-  storageBucket: 'pwa-test-43b65.firebasestorage.app',
-  messagingSenderId: '487659758849',
-  appId: '1:487659758849:web:03debc6934882b1fa0a700',
-  measurementId: 'G-BE7CS9YD1',
+  apiKey: import.meta.env.VITE_APP_API_KEY,
+  authDomain: import.meta.env.VITE_APP_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_APP_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_APP_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_APP_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_APP_APP_ID,
+  measurementId: import.meta.env.VITE_APP_MEASUREMENT_ID,
 }
 
 firebase.initializeApp(firebaseConfig)
