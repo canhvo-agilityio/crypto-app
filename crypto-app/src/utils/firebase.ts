@@ -1,3 +1,4 @@
+// utils.ts
 import { initializeApp } from 'firebase/app'
 import {
   getMessaging,
@@ -19,12 +20,12 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig)
 export const messaging = getMessaging(app)
 
-export const requestForToken = async () => {
+export const requestForToken = async (): Promise<string | null> => {
   try {
     const permission = await Notification.requestPermission()
     if (permission !== 'granted') {
       console.warn('Notification permission not granted')
-      return
+      return null
     }
 
     const currentToken = await getToken(messaging, {
@@ -32,14 +33,17 @@ export const requestForToken = async () => {
     })
 
     if (currentToken) {
-      return `FCM token: ${currentToken}`
+      return currentToken
     } else {
-      return 'No registration token available'
+      console.log('No registration token available')
+      return null
     }
   } catch (err) {
-    return `An error occurred while retrieving token., ${err}`
+    console.error('An error occurred while retrieving token.', err)
+    return null
   }
 }
+
 export const onMessageListener = (): Promise<MessagePayload> =>
   new Promise((resolve) => {
     onMessage(messaging, (payload) => {
