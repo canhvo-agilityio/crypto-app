@@ -8,15 +8,12 @@ const Notification = () => {
   const [notification, setNotification] = useState({ title: '', body: '' })
   const [token, setToken] = useState<string>('')
 
-  useEffect(() => {
-    const getToken = async () => {
-      const t = await requestForToken()
-      if (t) {
-        setToken(t)
-      }
+  const handleGetToken = async () => {
+    const t = await requestForToken()
+    if (t) {
+      setToken(t)
     }
-    getToken()
-  }, [])
+  }
 
   useEffect(() => {
     onMessageListener()
@@ -55,6 +52,14 @@ const Notification = () => {
   return (
     <>
       <div className="p-4">
+        {!token && (
+          <button
+            onClick={handleGetToken}
+            className="mt-2 rounded bg-blue-500 px-3 py-1 text-white hover:bg-blue-600"
+          >
+            Request token
+          </button>
+        )}
         {token && (
           <>
             <p className="break-all text-sm text-gray-700">{token}</p>
