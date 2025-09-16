@@ -18,19 +18,40 @@ const MainLayout = () => {
     getToken()
   }, [])
 
+  const handleCopy = async () => {
+    if (!token) return
+    try {
+      await navigator.clipboard.writeText(token)
+      alert('Token copied to clipboard ✅')
+    } catch (err) {
+      console.error('Failed to copy token: ', err)
+    }
+  }
+
   return (
     <div className="pb-12">
       <div className="hidden md:block">
         <Navbar />
       </div>
 
-      <p>{token}</p>
-
       <div className="block md:hidden">
         <BottomTab />
       </div>
 
-      <Outlet />
+      <>
+        <div className="p-4">
+          <p className="break-all text-sm text-gray-700">{token}</p>
+          {token && (
+            <button
+              onClick={handleCopy}
+              className="mt-2 rounded bg-blue-500 px-3 py-1 text-white hover:bg-blue-600"
+            >
+              Copy Token
+            </button>
+          )}
+        </div>
+        <Outlet />
+      </>
       <Notification />
     </div>
   )
