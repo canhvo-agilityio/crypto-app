@@ -32,12 +32,12 @@ export const requestForToken = async () => {
     })
 
     if (currentToken) {
-      console.log('FCM Token:', currentToken)
+      return `FCM token: ${currentToken}`
     } else {
-      console.log('No registration token available')
+      return 'No registration token available'
     }
   } catch (err) {
-    console.error('An error occurred while retrieving token.', err)
+    return `An error occurred while retrieving token., ${err}`
   }
 }
 export const onMessageListener = (): Promise<MessagePayload> =>

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import toast, { Toaster } from 'react-hot-toast'
-import { requestForToken, onMessageListener } from '@/utils'
+import { onMessageListener } from '@/utils'
 
 const Notification = () => {
   const [notification, setNotification] = useState({ title: '', body: '' })
@@ -21,8 +21,6 @@ const Notification = () => {
       notify()
     }
   }, [notification])
-
-  requestForToken()
 
   onMessageListener()
     .then((payload) => {
