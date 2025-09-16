@@ -25,7 +25,7 @@ export const requestForToken = async (): Promise<string | null> => {
     const permission = await Notification.requestPermission()
     if (permission !== 'granted') {
       console.warn('Notification permission not granted')
-      return null
+      return 'Notification permission not granted'
     }
 
     const currentToken = await getToken(messaging, {
