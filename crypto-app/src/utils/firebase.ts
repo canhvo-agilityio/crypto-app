@@ -35,12 +35,10 @@ export const requestForToken = async (): Promise<string | null> => {
     if (currentToken) {
       return currentToken
     } else {
-      console.log('No registration token available')
-      return null
+      return 'No registration token available'
     }
   } catch (err) {
-    console.error('An error occurred while retrieving token.', err)
-    return null
+    return `Error: ${err}`
   }
 }
 
