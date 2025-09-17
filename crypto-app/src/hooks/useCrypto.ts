@@ -181,7 +181,8 @@ export const useCoins = (filter?: string, search?: string) => {
       const handler = (event: MessageEvent) => {
         if (event.data?.type === 'SYNC_SUCCESS') {
           console.log('Background sync completed, refetching coins...')
-          fetchCoins()
+          getCoinsFromIndexedDB()
+          setError(null)
         }
       }
       navigator.serviceWorker.addEventListener('message', handler)
@@ -189,7 +190,7 @@ export const useCoins = (filter?: string, search?: string) => {
         navigator.serviceWorker.removeEventListener('message', handler)
       }
     }
-  }, [fetchCoins])
+  }, [fetchCoins, getCoinsFromIndexedDB])
 
   return { coins, isLoading, error }
 }

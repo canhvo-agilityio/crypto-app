@@ -1,5 +1,4 @@
 /// <reference lib="webworker" />
-/* eslint-disable no-undef */
 
 import { precacheAndRoute, createHandlerBoundToURL } from 'workbox-precaching'
 import { registerRoute, NavigationRoute } from 'workbox-routing'
@@ -11,6 +10,8 @@ import {
 import { ExpirationPlugin } from 'workbox-expiration'
 import { CacheableResponsePlugin } from 'workbox-cacheable-response'
 import { BackgroundSyncPlugin } from 'workbox-background-sync'
+import { addItem, getItem } from '../services/cryptoDB'
+import { COINS_STORE } from '../constants/keys'
 
 precacheAndRoute(self.__WB_MANIFEST)
 
@@ -97,7 +98,38 @@ const allCoinsBgSync = new BackgroundSyncPlugin('all-coins-queue', {
     let entry
     while ((entry = await queue.shiftRequest())) {
       try {
-        await fetch(entry.request) // Replay the request
+        const response = await fetch(entry.request) // Replay the request
+        const data = await response.json()
+        const transformed = data.map((coin) => ({
+          id: coin.id,
+          name: coin.name,
+          symbol: coin.symbol,
+          price: coin.current_price,
+          changePercent: coin.price_change_percentage_24h,
+          iconUrl: coin.image,
+          isTrending: false,
+        }))
+
+        await Promise.all(
+          transformed.map(async (coin) => {
+            const existingItem = await getItem(COINS_STORE, coin.id)
+            if (existingItem) {
+              await addItem(
+                COINS_STORE,
+                {
+                  ...existingItem.data,
+                  ...coin,
+                  isTrending: existingItem.data.isTrending || false,
+                },
+                coin.id,
+                coin.name,
+              )
+            } else {
+              await addItem(COINS_STORE, coin, coin.id, coin.name)
+            }
+          }),
+        )
+
         // Request successful, you can update UI or log here
         const allClients = await self.clients.matchAll({
           includeUncontrolled: true,
@@ -116,6 +148,7 @@ const allCoinsBgSync = new BackgroundSyncPlugin('all-coins-queue', {
     }
   },
 })
+
 registerRoute(
   /^https:\/\/api\.coingecko\.com\/api\/v3\/coins\/markets(\?.*)?$/,
   new NetworkFirst({
