@@ -3,7 +3,7 @@ import { defineConfig } from 'vite'
 import * as path from 'path'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
-import { WORKBOX_CONFIG, MANIFEST_CONFIG } from './src/config/pwa-config'
+import { MANIFEST_CONFIG } from './src/config/pwa-config'
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -30,14 +30,16 @@ export default defineConfig({
     tailwindcss(),
     VitePWA({
       registerType: 'autoUpdate',
-      injectRegister: 'auto',
+      strategies: 'injectManifest',
+      srcDir: 'src/sw',
+      filename: 'custom-sw.js',
+
       pwaAssets: {
         disabled: false,
         config: true,
       },
 
       manifest: MANIFEST_CONFIG,
-      workbox: WORKBOX_CONFIG(),
 
       devOptions: {
         enabled: true,

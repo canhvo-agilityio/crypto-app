@@ -18,17 +18,6 @@ firebase.initializeApp(firebaseConfig)
 // Retrieve firebase messaging
 const messaging = firebase.messaging()
 
-messaging.onBackgroundMessage(function (payload) {
-  // Customize notification here
-  const notificationTitle = payload.notification.title
-  const notificationOptions = {
-    body: payload.notification.body,
-    icon: '/icon-64x64.png',
-  }
-
-  self.registration.showNotification(notificationTitle, notificationOptions)
-})
-
 self.addEventListener('notificationclick', (event) => {
   event.notification.close()
   const targetUrl = event.notification.data?.url || '/'

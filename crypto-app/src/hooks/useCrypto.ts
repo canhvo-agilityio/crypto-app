@@ -78,7 +78,7 @@ export const useCoins = (filter?: string, search?: string) => {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
-  const getCoinsFromIndexedDB = async () => {
+  const getCoinsFromIndexedDB = useCallback(async () => {
     const storedItems = await getItems<CryptoBase>(COINS_STORE)
     let dataFiltered = storedItems.map((item) => item.data)
 
@@ -104,15 +104,16 @@ export const useCoins = (filter?: string, search?: string) => {
     if (dataFiltered.length === 0) {
       setError('No coins available offline')
     }
-  }
+  }, [filter, search])
 
-  const fetchCoins = async () => {
+  const fetchCoins = useCallback(async () => {
     setIsLoading(true)
     setError(null)
     try {
       const response = await get<CryptoItem[]>(
         `${API_URL.BASE_URL}/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100`,
       )
+
       const transformed: CryptoBase[] = response.map((coin: CryptoItem) => ({
         id: coin.id,
         name: coin.name,
@@ -169,11 +170,26 @@ export const useCoins = (filter?: string, search?: string) => {
     } finally {
       setIsLoading(false)
     }
-  }
+  }, [filter, search, getCoinsFromIndexedDB])
 
   useEffect(() => {
     fetchCoins()
-  }, [filter, search])
+  }, [fetchCoins])
+
+  useEffect(() => {
+    if ('serviceWorker' in navigator) {
+      const handler = (event: MessageEvent) => {
+        if (event.data?.type === 'SYNC_SUCCESS') {
+          console.log('Background sync completed, refetching coins...')
+          fetchCoins()
+        }
+      }
+      navigator.serviceWorker.addEventListener('message', handler)
+      return () => {
+        navigator.serviceWorker.removeEventListener('message', handler)
+      }
+    }
+  }, [fetchCoins])
 
   return { coins, isLoading, error }
 }
