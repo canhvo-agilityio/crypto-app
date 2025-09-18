@@ -1,50 +1,60 @@
-# React + TypeScript + Vite
+# PWA Practice
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Overview
 
-Currently, two official plugins are available:
+- This document concerns pwa practice. Build the Crypto web application to see coin rates.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Target
 
-## Expanding the ESLint configuration
+- Build a Progressive Web Application (PWA)
+- Understand what a PWA is
+- Learn why it should be used
+- Understand caching strategies and offline data handling.
+- Push Notifications
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+## Technical Stack
 
-- Configure the top-level `parserOptions` property like this:
+- React
+- Typescript
+- Vite
+- PWA Vite Plugin
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+## Features
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+- Live crypto price display
+- Daily change (+/-)
+- Push notification
+- Offline support with cached prices
+- Handle background sync
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+### Installation
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+1. **Clone the repository:**
+
+   ```bash
+   git@gitlab.asoft-python.com:canh.vo/pwa-training.git
+   ```
+
+2. **Checkout into "crypto-app" branch:**
+
+   ```bash
+   git checkout crypto-app
+   ```
+
+3. **Install dependencies:**
+
+   ```bash
+   cd crypto-app
+   ```
+
+   ```bash
+   pnpm install
+   ```
+
+4. **Start the project**
+
+   | Script         | Description                                           |
+   | -------------- | ----------------------------------------------------- |
+   | `pnpm dev`     | Starts the development server using Vite              |
+   | `pnpm build`   | Builds the app for production using TypeScript + Vite |
+   | `pnpm preview` | Serves the production build locally                   |
