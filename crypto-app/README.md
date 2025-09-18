@@ -24,7 +24,7 @@
 - Live crypto price display
 - Daily change (+/-)
 - Push notification
-- Offline support with cached prices
+- Offline support
 - Handle background sync
 
 ### Installation

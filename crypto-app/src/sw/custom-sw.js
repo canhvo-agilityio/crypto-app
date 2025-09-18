@@ -91,15 +91,16 @@ registerRoute(
 const allCoinsBgSync = new BackgroundSyncPlugin('all-coins-queue', {
   maxRetentionTime: 24 * 60,
   onSync: async ({ queue }) => {
-    // This function is called when a sync event fires, indicating a retry attempt.
-    // You can add custom logic here to handle the replay of requests.
-    // For example, you might want to update the UI or send a notification.
-
     let entry
+
     while ((entry = await queue.shiftRequest())) {
+      let retryCount = entry.metadata?.retries || 0
+      let success = false
+
       try {
-        const response = await fetch(entry.request) // Replay the request
+        const response = await fetch(entry.request)
         const data = await response.json()
+
         const transformed = data.map((coin) => ({
           id: coin.id,
           name: coin.name,
@@ -130,7 +131,6 @@ const allCoinsBgSync = new BackgroundSyncPlugin('all-coins-queue', {
           }),
         )
 
-        // Request successful, you can update UI or log here
         const allClients = await self.clients.matchAll({
           includeUncontrolled: true,
         })
@@ -140,14 +140,47 @@ const allCoinsBgSync = new BackgroundSyncPlugin('all-coins-queue', {
             url: entry.request.url,
           })
         }
+
+        success = true
       } catch (error) {
         console.error('Background sync request failed:', error)
-        await queue.unshiftRequest(entry) // Put it back in the queue
-        // Handle the failure, e.g., show an error notification
+        retryCount++
+
+        if (retryCount < 3) {
+          console.log(`Retrying... Attempt ${retryCount}/3`)
+          await queue.unshiftRequest({
+            request: entry.request,
+            metadata: { retries: retryCount },
+          })
+        } else {
+          console.log(
+            'Max retries reached. Skipping this request:',
+            entry.request.url,
+          )
+        }
+      }
+
+      if (!success && retryCount >= 3) {
+        console.log(`Request failed after 3 retries:`, entry.request.url)
       }
     }
   },
 })
+
+registerRoute(
+  /^https:\/\/api\.coingecko\.com\/api\/v3\/coins\/markets(\?.*)?$/,
+  new NetworkFirst({
+    cacheName: 'all-coins-cache',
+    plugins: [
+      new ExpirationPlugin({
+        maxEntries: 10,
+        maxAgeSeconds: 24 * 60 * 60,
+      }),
+      allCoinsBgSync,
+    ],
+  }),
+  'GET',
+)
 
 registerRoute(
   /^https:\/\/api\.coingecko\.com\/api\/v3\/coins\/markets(\?.*)?$/,
